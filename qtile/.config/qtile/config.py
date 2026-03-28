@@ -228,7 +228,10 @@ screens = [
                     .strip(),
                     update_interval=0.2,
                 ),
-                widget.Clock(format="%d-%m %a  %I:%M %p"),
+                widget.Clock(
+                    format="%d-%m %a  %I:%M %p",
+                    mouse_callbacks={"Button1": lambda: qtile.spawn("gsimplecal")},
+                ),
                 widget.QuickExit(),
             ],
             24,
@@ -311,6 +314,7 @@ floating_layout = layout.Floating(
         Match(title="branchdialog"),  # gitk
         Match(title="pinentry"),  # GPG key password entry
         Match(title="Pavucontrol"),
+        Match(title="gsimplecal"),
     ],
 )
 auto_fullscreen = True
