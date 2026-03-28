@@ -161,12 +161,11 @@ require("lazy").setup({
 		},
 		opts = {
 			filesystem = {
-
 				filtered_items = {
 					visible = true,
 				},
 				follow_current_file = {
-					enabled = true, -- highlight current file
+					enabled = true,
 					leave_dirs_open = false,
 				},
 				hijack_netrw_behavior = "open_default",
@@ -251,10 +250,8 @@ require("lazy").setup({
 			{ "hrsh7th/cmp-nvim-lsp" },
 		},
 		config = function()
-			-- Capabilities for completion
 			local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-			-- Configure servers using the NEW native API
 			-- Python
 			vim.lsp.config("pyright", {
 				capabilities = capabilities,
@@ -274,8 +271,8 @@ require("lazy").setup({
 			vim.lsp.config("jsonls", { capabilities = capabilities })
 			vim.lsp.config("dockerls", { capabilities = capabilities })
 			vim.lsp.config("terraformls", { capabilities = capabilities })
-			vim.lsp.config("taplo", { capabilities = capabilities }) -- TOML
-			vim.lsp.config("ansiblels", { capabilities = capabilities }) -- Ansible
+			vim.lsp.config("taplo", { capabilities = capabilities })
+			vim.lsp.config("ansiblels", { capabilities = capabilities })
 
 			vim.lsp.config("yamlls", {
 				capabilities = capabilities,
@@ -311,7 +308,6 @@ require("lazy").setup({
 				end,
 			})
 
-			-- Mason installs binaries; mason-lspconfig auto-enables servers
 			require("mason").setup()
 			require("mason-lspconfig").setup({
 				ensure_installed = {
@@ -392,8 +388,67 @@ require("lazy").setup({
 		end,
 	},
 	{ "windwp/nvim-autopairs", event = "InsertEnter", opts = {} },
+	{
+		"supermaven-inc/supermaven-nvim",
+		event = "InsertEnter",
+		opts = {
+			keymaps = {
+				accept_suggestion = "<C-l>",
+			},
+		},
+	},
+
+	----------------------------------------------------------
+	-- AI Assistant (avante.nvim)
+	----------------------------------------------------------
+	{
+		"yetone/avante.nvim",
+		event = "VeryLazy",
+		version = false,
+		build = "make",
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter",
+			"stevearc/dressing.nvim",
+			"nvim-lua/plenary.nvim",
+			"MunifTanjim/nui.nvim",
+			"nvim-tree/nvim-web-devicons",
+			"hrsh7th/nvim-cmp",
+		},
+		opts = {
+			provider = "claude",
+			input = { provider = "dressing" },
+			providers = {
+				claude = {
+					endpoint = "https://api.anthropic.com",
+					model = "claude-haiku-4-5-20251001",
+					extra_request_body = {
+						temperature = 0,
+						max_tokens = 4096,
+					},
+				},
+			},
+			mappings = {
+				ask = "<leader>aa",
+				edit = "<leader>ae",
+				refresh = "<leader>ar",
+				diff = {
+					ours = "co",
+					theirs = "ct",
+					none = "c0",
+					both = "cb",
+					next = "]x",
+					prev = "[x",
+				},
+			},
+			hints = { enabled = true },
+			windows = {
+				sidebar_header = { align = "center" },
+				width = 40,
+			},
+		},
+	},
 }, {
-	rocks = { enabled = false }, -- disables LuaRocks warnings
+	rocks = { enabled = false },
 })
 
 ------------------------------------------------------------
@@ -406,21 +461,16 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 		vim.highlight.on_yank()
 	end,
 })
+
 vim.api.nvim_create_autocmd("VimEnter", {
 	callback = function(data)
 		local directory = vim.fn.isdirectory(data.file) == 1
 		if not directory then
 			return
 		end
-
-		-- change cwd to the directory
 		vim.cmd.cd(data.file)
-
-		-- ensure neo-tree is loaded before calling :Neotree
 		pcall(require, "lazy")
 		pcall(require("lazy").load, { plugins = { "neo-tree.nvim" } })
-
-		-- now the command exists
 		vim.cmd("Neotree show")
 	end,
 })
