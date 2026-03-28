@@ -1,0 +1,73 @@
+# Alacritty Configuration File
+# Documentation: https://github.com/alacritty/alacritty/blob/master/ALACRITTY.md
+
+# Налаштування шрифту
+
+[font.bold]
+family = "JetBrainsMono Nerd Font"
+style = "Bold"
+
+[font.glyph_offset]
+x = 0
+y = 0
+
+[font.italic]
+family = "JetBrainsMono Nerd Font"
+
+[font.normal]
+family = "JetBrainsMono Nerd Font"
+style = "Regular"
+
+
+# Налаштування кольорів
+[colors]
+# Основний фон і текст
+primary = { background = '0x1e1e2e', foreground = '0xe0e3a1' }
+
+# Нормальні кольори
+[colors.normal]
+black = '0x1e1e1e'
+red = '0xd75f5f'
+green = '0x8fbf7f'
+yellow = '0xf7f97d'
+blue = '0x87afff'
+magenta = '0xd787d7'
+cyan = '0x87ffff'
+white = '0xe4e4e4'
+
+# Яскраві кольори
+[colors.bright]
+black = '0x656565'
+red = '0xff6f6f'
+green = '0xafff87'
+yellow = '0xfffd93'
+blue = '0x87d7ff'
+magenta = '0xffafd7'
+cyan = '0xbfefff'
+white = '0xffffff'
+# Прокрутка
+[scrolling]
+# Кількість ліній, які будуть прокручуватись за один раз
+history = 10000
+
+# Налаштування курсору
+[cursor]
+style = "Block" # Інші варіанти: Beam, Underline
+
+# Налаштування вікна
+[window]
+# Початковий розмір вікна
+dimensions = { columns = 120, lines = 30 }
+opacity = 0.75
+
+
+# Заголовок вікна
+dynamic_title = true
+
+# Налаштування
+
+
+[[keyboard.bindings]]
+key = "Return"
+mods = "Shift"
+chars = "\u001B\r"
