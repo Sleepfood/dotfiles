@@ -19,6 +19,8 @@ zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
 zinit light Aloxaf/fzf-tab
+zinit light jeffreytse/zsh-vi-mode
+zinit light zsh-users/zsh-history-substring-search
 
 # Add in snippets
 zinit snippet OMZP::git
@@ -37,8 +39,12 @@ zinit cdreplay -q
 
 # Keybindings
 bindkey -e
+bindkey -v
 bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
+bindkey '^R' history-incremental-search-backward
+bindkey '^P' history-substring-search-up
+bindkey '^N' history-substring-search-down
 
 # History
 HISTSIZE=5000
