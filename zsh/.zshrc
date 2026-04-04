@@ -35,16 +35,28 @@ zinit snippet OMZP::command-not-found
 ZSH_AUTOSUGGEST_STRATEGY=(history completion) 
 autoload -U compinit && compinit
 
+
+# K8s autocompletion
+source <(kubectl completion zsh)
+alias k=kubectl
+compdef k=kubectl
+
 zinit cdreplay -q
 
 # Keybindings
-bindkey -e
-bindkey -v
-bindkey '^p' history-search-backward
-bindkey '^n' history-search-forward
-bindkey '^R' history-incremental-search-backward
-bindkey '^P' history-substring-search-up
-bindkey '^N' history-substring-search-down
+zvm_after_init() {
+#bindkey -e
+#bindkey -v
+#bindkey '^p' history-search-backward
+#bindkey '^n' history-search-forward
+#bindkey '^R' history-incremental-search-backward
+#bindkey '^P' history-substring-search-up
+#bindkey '^N' history-substring-search-down
+bindkey -M viins '^[p' history-substring-search-up   
+bindkey -M viins '^[n' history-substring-search-down  
+bindkey -M viins '^[f' forward-word                    
+}
+
 
 # History
 HISTSIZE=5000
@@ -64,6 +76,7 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 zstyle ':completion:*' menu no
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+zstyle ':fzf-tab:*' fzf-bindings 'alt-j:down' 'alt-k:up'
 
 # Aliases
 alias ls='ls --color'

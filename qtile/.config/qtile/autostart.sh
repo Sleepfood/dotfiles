@@ -1,6 +1,5 @@
 #!/bin/bash
 
-xmodmap .config/dotfiles/qtile/.config/qtile/Xmodmap
 setxkbmap -layout us,ua -option grp:caps_toggle
 xinput set-prop 10 "libinput Tapping Enabled" 1
 xrandr --output DP-2 --primary --auto --output DVI-D-0 --auto --left-of DP-2 --output HDMI-0 --auto --right-of DP-2
