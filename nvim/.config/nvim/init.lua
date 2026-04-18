@@ -39,6 +39,7 @@ vim.keymap.set("n", "<leader>y", '"+yy', { noremap = true, silent = true })
 vim.keymap.set("v", "//", 'y/\\V<C-r>"<CR>')
 vim.keymap.set("v", "p", '"_dP', { noremap = true, silent = true })
 vim.keymap.set("i", "jj", "<Esc>", { noremap = true })
+vim.keymap.set("n", "<A-n>", ":e ", { desc = "New file" })
 
 vim.opt.number = true
 vim.opt.relativenumber = true
