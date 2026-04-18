@@ -120,12 +120,8 @@ keys = [
     Key([mod], "v", lazy.spawn("copyq menu"), desc="Spawn copyq"),
     Key([mod], "d", lazy.spawn("thunar"), desc="Spawn the Files"),
     Key(["control", "shift"], "l", lazy.spawn("betterlockscreen -l")),
-    Key(
-        [],
-        "Print",
-        lazy.spawn("flameshot gui"),
-        desc="Spawn Flameshot",
-    ),
+    Key([], "Print", lazy.spawn("flameshot gui"), desc="Spawn Flameshot"),
+    Key(["shift"], "Print", lazy.spawn("normcap"), desc="Spawn Normcap"),
 ]
 
 # Add key bindings to switch VTs in Wayland.
