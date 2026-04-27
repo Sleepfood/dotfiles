@@ -65,10 +65,14 @@ vim.opt.splitbelow = true
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")
 vim.keymap.set("t", "<C-w>", "<C-\\><C-n><C-w>")
 
+
 ------------------------------------------------------------
 -- Plugins
 ------------------------------------------------------------
 require("lazy").setup({
+
+	-- Helm syntax highlighting + filetype detection
+	{ "towolf/vim-helm", ft = "helm" },
 
 	-- Theme
 	{
@@ -275,8 +279,20 @@ require("lazy").setup({
 			vim.lsp.config("taplo", { capabilities = capabilities })
 			vim.lsp.config("ansiblels", { capabilities = capabilities })
 
+			-- HELM: helm_ls для Helm чартів
+			vim.lsp.config("helm_ls", {
+				capabilities = capabilities,
+				settings = {
+					["helm-ls"] = {
+						yamlls = { enabled = false }, -- уникаємо конфлікту з yamlls
+					},
+				},
+			})
+
+			-- yamlls вимикається для helm filetype щоб не конфліктувати
 			vim.lsp.config("yamlls", {
 				capabilities = capabilities,
+				filetypes = { "yaml", "yaml.docker-compose" }, -- виключаємо "helm"
 				settings = {
 					yaml = {
 						validate = true,
@@ -320,6 +336,7 @@ require("lazy").setup({
 					"terraformls",
 					"taplo",
 					"ansiblels",
+					"helm_ls", -- HELM
 				},
 				automatic_enable = true,
 			})
@@ -342,6 +359,7 @@ require("lazy").setup({
 					hcl = { "terraform_fmt" },
 					toml = { "taplo" },
 					lua = { "stylua" },
+					helm = {}, -- явно порожньо: prettier зламає {{ }} шаблони
 				},
 				format_on_save = { timeout_ms = 1500, lsp_fallback = true },
 			})
