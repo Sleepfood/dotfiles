@@ -17,6 +17,8 @@ def run_every_startup():
 
 
 def move_to_next_screen(qtile):
+    if qtile.current_window is None:
+        return
     if qtile.current_screen.index in [0, 1]:
         other = 1 - qtile.current_screen.index
         qtile.current_window.toscreen(other)
@@ -64,18 +66,7 @@ keys = [
     Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
     # Switch focus
     #   Key([mod], "n", lazy.next_screen(), desc="Focus to next screen"),
-    Key(
-        [mod],
-        "n",
-        lazy.function(
-            lambda qtile: (
-                qtile.cmd_to_screen(1 - qtile.current_screen.index)
-                if qtile.current_screen.index in [0, 1]
-                else None
-            )
-        ),
-        desc="Focus between screen 1 and 2",
-    ),
+    Key([mod], "n", lazy.next_screen(), desc="Focus next screen"),
     # Layouts splitting\unsplitting
     Key(
         [mod, "shift"],
@@ -190,8 +181,11 @@ extension_defaults = widget_defaults.copy()
 
 ### Functions ###
 # Volume_click
-def open_pavucontrol():
-    qtile.cmd_spawn("pavucontrol")
+def spawn_cmd(*cmd):
+    def _inner(*_args):
+        subprocess.Popen(list(cmd))
+
+    return _inner
 
 
 screens = [
@@ -214,7 +208,7 @@ screens = [
                 # widget.StatusNotifier(),
                 widget.Systray(),
                 widget.Volume(
-                    fmt="Vol: {}", mouse_callbacks={"Button1": open_pavucontrol}
+                    fmt="Vol: {}", mouse_callbacks={"Button1": spawn_cmd("pavucontrol")}
                 ),
                 widget.GenPollText(
                     func=lambda: subprocess.check_output(
@@ -226,7 +220,7 @@ screens = [
                 ),
                 widget.Clock(
                     format="%d-%m %a  %I:%M %p",
-                    mouse_callbacks={"Button1": lambda: qtile.spawn("gsimplecal")},
+                    mouse_callbacks={"Button1": spawn_cmd("gsimplecal")},
                 ),
                 widget.QuickExit(),
             ],
